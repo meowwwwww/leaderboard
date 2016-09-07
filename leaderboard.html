@@ -1,0 +1,121 @@
+<head>
+	<title> Snake & Ladder</title>
+</head>
+<body>
+	<nav class="navbar navbar-inverse">
+	  	<div class="container-fluid">
+    		<div class="navbar-header">	
+    			<a class="pull-left" href="#"> <img src="img/logo.png" width="30%"></a>
+			</div>
+			<div class="nav navbar-nav navbar-right">
+			<!-- wanted to create a nicer looking user login interface using user name and password,
+			but do not know how to. For know, will keep using accounts-ui package. Thus user
+			needs to create account and login using email-->
+				{{> loginButtons}}
+          	</div>
+		</div>
+	</nav>
+
+	<div class="row">
+		<div class="container-fluid">
+			<div class = "col-md-5" style="padding:0;">
+			<!--will remain at the same place throughout-->
+				{{> gameRules}}
+			</div>
+			<div class = "col-md-7" style="padding-left:0; text-align:center">
+				{{> leaderboard}}
+			</div>
+		</div>
+	</div>
+</body>
+<template name="leaderboard" >
+	{{#if currentUser}}
+	    <h2> Current Round </h2>
+		<table align="center">
+			<tr>
+				<th style="width:100px"> Turn </th>
+				<th style="width:200px"> Name </th>
+				<th style="width:100px"> Score (1-100) </th>
+			</tr>
+			{{#each player}}
+				<tr class="player {{winner}} {{currentPlayer}}">
+					<td> <!--if the player is playing the current turn, mark a star -->
+					{{#if isEqual this._id currentPlayer._id }}
+					<span class="glyphicon glyphicon-star"> </span>
+					{{/if}}
+					{{#if isEqual this._id winner._id}} Won! {{/if}}
+					</td>
+					<td> {{name}} </td>
+					<td> {{score}} </td>
+			</tr>
+			{{/each}}
+		</table>
+		<br>
+		{{#if playerLimit}} 
+			{{#if startPlaying}}
+				<p> You have 4 players. <button class="startPlaying"> Start playing! </button></p> <br>
+			{{/if}}
+			{{#if startRolling}}
+				{{#if finished}}
+					<p> {{winner.name}} is the winner! </p>
+					<!--the button only appears if the last game has finished i.e there is a winner-->
+					<button class="restart"> Play another round? </button>
+				{{else}}
+					{{#if rollSix}}
+						<p>{{ rollSixPlayer.name}} has got a 6! Please roll the dice again.</p>
+					{{/if}}
+					{{#if hitSnakes}}
+						<p> {{hitSnake.name}} has hit a snake at {{snakeStart}}! {{hitSnake.name}}'s new score will be {{snakeEnd}} </p>
+					{{/if}}
+
+					{{#if hitLadders}}
+						<p> {{hitLadder.name}} has hit a ladder at {{ladderStart}}! {{hitLadder.name}}'s new score will be {{ladderEnd}}</p>
+					{{/if}}
+					{{#if duplicateScore}}
+						<p> {{dupName.name}}'s new score would be {{dupScore}}, which is a duplicate. Thus, no score has been awarded. </p>
+					{{/if}}
+
+					{{#if overshoot}}
+						<p> Oops, {{ overshootPlayer.name}} overshot the target! Thus, no score has been awarded.</p>
+					{{/if}}
+
+
+					<button class="roll"> Roll</button> <br>
+					
+					{{#if roll}}
+						<p>  Move <div class="boxed"> {{roll}}</div> steps forward. </p>
+					{{/if}}
+				{{/if}}
+			{{/if}}
+		{{else}}
+			{{> addPlayerForm}}
+		{{/if}}
+	{{else}}
+		<p> You must be logged-in to see this content.</p>
+	{{/if}}
+</template>
+
+<template name="addPlayerForm">
+	<form>
+		<input type="text" name="playerName">
+		<input type="submit" value ="Add Player">
+	</form>
+</template>
+<template name="gameRules">
+	<h2 style="text-align:center"> Game Rules </h2>
+	<ul style="text-align:justify">
+		<li> Exactly 4 players for each game.</li>
+		<li> Players take turn to roll the dice. The number on the dice indicates the number of steps forward for that turn </li>
+		<li> No two players have identical score in 1 turn. For example, if A's current score is 6, B's current score is 4 and B rolls a 2, B score will remain 4 for that turn. </li>
+		<li> If rolled a 6, player can roll again.</li>
+		<li> If player hits the bottom of a ladder, he will travel to the top of the ladder. If the top is already occupied, he will remain at the bottom. </li>
+		<li> If player hits the bottom of a snake, he will travel to the head of the snake. If the head is already occupied, he will remain at the bottom. </li>
+		<li> Player who reaches 100 first is the winner.</li>
+		<li> If player's score is greater than 100 after adding the current roll, the current roll will not be added to player's score </li>
+	</ul>
+	<br>
+	<ul style="list-style-type:none;text-align:justify">
+		<li> <h4> Do you know? </h4> </li>
+		<li> Snakes and Ladders originated in ancient India, where it was known as Mokshapat or Moksha Patamu. The game was played at a time as early as 2nd century BC. Originally, the game was used as a part of moral instruction to children. The squares in which ladders start were each supposed to stand for a virtue, and those housing the head of a snake were supposed to stand for an evil. </li>
+	</ul>
+</template>

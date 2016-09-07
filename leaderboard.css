@@ -1,0 +1,44 @@
+body{
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  background-color:#54D9B7;
+}
+.active{
+	background-color:white;
+}
+.navbar-nav > li > a > {
+  	padding-top: 0px;
+  	padding-bottom: 0px;
+  	font-color: white;
+  	font-size: 40px;
+  	margin-left: 50px;
+  	margin-right: 50px;
+}
+.navbar-right{
+  margin-right: 200px;
+  padding-top: 20px;
+}
+.navbar-fixed-top {
+    min-height: 90px;
+}
+#nav, #nav-inner, .nav-list, .nav-list-item a {
+    color: #fffff0;
+}
+
+table, th, td{
+    border: 1px solid black;
+    text-align: center;
+  }
+th{
+  background-color: #333333;
+  color: white;
+  text-decoration: none;
+}
+.boxed{
+  border: 1px solid black;
+  height: 30px;
+  width: 50px fixed;
+  display:inline;
+  text-align: center;
+  background-color: #333333;
+  color: white;
+}
